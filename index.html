@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xisaabiyaha Qiimo-dhimista</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1f4235">
+<style>
+  :root{
+    --ink:#1c2521;
+    --paper:#faf7f0;
+    --line:#dcd3c2;
+    --gold:#b8860b;
+    --gold-deep:#8a6508;
+    --green:#2f5d4c;
+    --green-soft:#e7f0ec;
+    --red:#a3402f;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    min-height:100vh;
+    background:
+      radial-gradient(circle at 20% 10%, #f4ead2 0%, transparent 45%),
+      var(--paper);
+    font-family: 'Georgia', 'Amiri', serif;
+    color:var(--ink);
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    padding:32px 16px;
+  }
+  .card{
+    width:100%;
+    max-width:420px;
+    background:#fffdf8;
+    border:1px solid var(--line);
+    border-radius:18px;
+    box-shadow: 0 20px 40px -20px rgba(28,37,33,0.25);
+    overflow:hidden;
+  }
+  .header{
+    background: linear-gradient(135deg, var(--green) 0%, #1f4235 100%);
+    color:#fdf9ee;
+    padding:26px 26px 22px;
+    position:relative;
+  }
+  .header::after{
+    content:"";
+    position:absolute;
+    left:0; right:0; bottom:-1px;
+    height:14px;
+    background:
+      linear-gradient(135deg, transparent 49%, #fffdf8 50%) 0 0/16px 16px repeat-x;
+  }
+  .top-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:10px;
+  }
+  .eyebrow{
+    font-family:'Trebuchet MS', sans-serif;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    font-size:11px;
+    color:#cfe3d8;
+    margin:0 0 6px;
+  }
+  h1{
+    margin:0;
+    font-size:26px;
+    font-weight:700;
+    letter-spacing:.01em;
+  }
+  .sub{
+    margin:6px 0 0;
+    font-size:13px;
+    color:#d8ead9;
+    font-family:'Trebuchet MS', sans-serif;
+  }
+  #installBtn{
+    display:none;
+    align-items:center;
+    gap:6px;
+    background:var(--gold);
+    color:#241a02;
+    border:none;
+    border-radius:10px;
+    padding:9px 12px;
+    font-family:'Trebuchet MS', sans-serif;
+    font-size:12px;
+    font-weight:700;
+    cursor:pointer;
+    white-space:nowrap;
+    box-shadow:0 6px 14px -6px rgba(0,0,0,0.4);
+    flex-shrink:0;
+  }
+  #installBtn:hover{ background:#c8940f; }
+  #installBtn svg{ width:14px; height:14px; }
+
+  .body{ padding:24px 26px 28px; }
+
+  label{
+    display:block;
+    font-family:'Trebuchet MS', sans-serif;
+    font-size:12px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--gold-deep);
+    margin-bottom:8px;
+    font-weight:700;
+  }
+  .price-wrap{
+    display:flex;
+    align-items:baseline;
+    border:2px solid var(--line);
+    border-radius:12px;
+    padding:10px 14px;
+    background:#fff;
+    transition:border-color .15s ease;
+  }
+  .price-wrap:focus-within{ border-color:var(--gold); }
+  .price-wrap span{
+    font-size:20px;
+    color:#8a8272;
+    margin-right:6px;
+  }
+  input[type="number"]{
+    border:none;
+    outline:none;
+    font-size:24px;
+    font-family:Georgia, serif;
+    width:100%;
+    background:transparent;
+    color:var(--ink);
+  }
+
+  .tiers{ margin-top:22px; }
+  .tier-row{ display:flex; gap:10px; margin-bottom:10px; }
+  .tier-btn{
+    flex:1;
+    padding:12px 6px;
+    border-radius:10px;
+    border:2px solid var(--line);
+    background:#fff;
+    font-family:'Trebuchet MS', sans-serif;
+    font-size:15px;
+    font-weight:700;
+    color:var(--ink);
+    cursor:pointer;
+    transition: all .15s ease;
+    position:relative;
+  }
+  .tier-btn:hover{ border-color:var(--gold); }
+  .tier-btn.active{
+    background: var(--green);
+    border-color: var(--green);
+    color:#fdf9ee;
+  }
+  .tier-btn .pct{ display:block; font-size:17px; }
+  .tier-btn .lbl{ display:block; font-size:10px; letter-spacing:.05em; opacity:.85; margin-top:2px; text-transform:uppercase;}
+
+  .custom-row{
+    margin-top:6px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    border:2px dashed var(--line);
+    border-radius:10px;
+    padding:8px 12px;
+  }
+  .custom-row label{ margin:0; font-size:11px; white-space:nowrap; }
+  .custom-row input[type="number"]{ font-size:16px; }
+  .custom-row span{ font-size:16px; color:#8a8272; }
+
+  .result{
+    margin-top:24px;
+    border-radius:14px;
+    background: var(--green-soft);
+    border:1px solid #cfe3d8;
+    padding:18px 20px;
+  }
+  .result-line{
+    display:flex;
+    justify-content:space-between;
+    font-family:'Trebuchet MS', sans-serif;
+    font-size:13px;
+    color:#4a5f55;
+    margin-bottom:6px;
+  }
+  .result-line.strike span:last-child{ text-decoration: line-through; color:#a3402f; }
+  .final{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    margin-top:10px;
+    padding-top:12px;
+    border-top:1px dashed #b9d2c5;
+  }
+  .final .lbl{
+    font-family:'Trebuchet MS', sans-serif;
+    font-size:13px;
+    font-weight:700;
+    color:var(--green);
+    text-transform:uppercase;
+    letter-spacing:.05em;
+  }
+  .final .amt{
+    font-size:32px;
+    font-weight:700;
+    color:var(--green);
+  }
+  .empty-hint{
+    text-align:center;
+    color:#8a8272;
+    font-family:'Trebuchet MS', sans-serif;
+    font-size:13px;
+    padding:6px 0;
+  }
+  .installed-note{
+    text-align:center;
+    margin-top:14px;
+    font-family:'Trebuchet MS', sans-serif;
+    font-size:11px;
+    color:#8a8272;
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="header">
+    <div class="top-row">
+      <div>
+        <p class="eyebrow">Suuqa &middot; Ganacsiga</p>
+        <h1>Xisaabiyaha Qiimo-dhimista</h1>
+      </div>
+      <button id="installBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="M7 11l5 5 5-5"/><path d="M5 21h14"/></svg>
+        Download
+      </button>
+    </div>
+    <p class="sub">Gali qiimaha, dooro dhimista &mdash; jawaabta si toos ah ayaad u arki doontaa.</p>
+  </div>
+
+  <div class="body">
+    <label for="price">Qiimaha asalka ah</label>
+    <div class="price-wrap">
+      <span>$</span>
+      <input type="number" id="price" placeholder="0.00" inputmode="decimal" min="0" step="0.01">
+    </div>
+
+    <div class="tiers">
+      <label>Dooro qiimo-dhimis</label>
+      <div class="tier-row">
+        <button class="tier-btn" data-rate="0.10"><span class="pct">10%</span><span class="lbl">Yar</span></button>
+        <button class="tier-btn" data-rate="0.15"><span class="pct">15%</span><span class="lbl">Dhexe</span></button>
+        <button class="tier-btn" data-rate="0.20"><span class="pct">20%</span><span class="lbl">Weyn</span></button>
+      </div>
+      <div class="custom-row">
+        <label for="custom">Gaar ah</label>
+        <input type="number" id="custom" placeholder="e.g. 25" min="0" max="100" step="1">
+        <span>%</span>
+      </div>
+    </div>
+
+    <div class="result" id="result">
+      <div id="resultBody">
+        <p class="empty-hint">Gali qiimo, dabadeed dooro dhimis si aad u aragto qiimaha ugu dambeeya.</p>
+      </div>
+    </div>
+
+    <p class="installed-note" id="installedNote" style="display:none;">✓ Waa lagu rakibay jaantusaadka</p>
+  </div>
+</div>
+
+<script>
+  const priceInput = document.getElementById('price');
+  const customInput = document.getElementById('custom');
+  const tierBtns = document.querySelectorAll('.tier-btn');
+  const resultBody = document.getElementById('resultBody');
+  const installBtn = document.getElementById('installBtn');
+  const installedNote = document.getElementById('installedNote');
+
+  let activeRate = null;
+
+  function setActiveButton(rate){
+    tierBtns.forEach(b => {
+      b.classList.toggle('active', rate !== null && parseFloat(b.dataset.rate) === rate);
+    });
+  }
+
+  function render(){
+    const price = parseFloat(priceInput.value);
+
+    if (isNaN(price) || price <= 0 || activeRate === null){
+      resultBody.innerHTML = '<p class="empty-hint">Gali qiimo, dabadeed dooro dhimis si aad u aragto qiimaha ugu dambeeya.</p>';
+      return;
+    }
+
+    const discountAmt = price * activeRate;
+    const finalPrice = price - discountAmt;
+    const pctLabel = (activeRate * 100).toFixed(activeRate*100 % 1 === 0 ? 0 : 1);
+
+    resultBody.innerHTML = `
+      <div class="result-line">
+        <span>Qiimaha asalka</span>
+        <span>$${price.toFixed(2)}</span>
+      </div>
+      <div class="result-line strike">
+        <span>Dhimista (${pctLabel}%)</span>
+        <span>-$${discountAmt.toFixed(2)}</span>
+      </div>
+      <div class="final">
+        <span class="lbl">Wax lacageed</span>
+        <span class="amt">$${finalPrice.toFixed(2)}</span>
+      </div>
+    `;
+  }
+
+  tierBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const rate = parseFloat(btn.dataset.rate);
+      if (activeRate === rate){
+        activeRate = null;
+      } else {
+        activeRate = rate;
+        customInput.value = '';
+      }
+      setActiveButton(activeRate);
+      render();
+    });
+  });
+
+  customInput.addEventListener('input', () => {
+    const val = parseFloat(customInput.value);
+    if (!isNaN(val) && val >= 0){
+      activeRate = val / 100;
+      setActiveButton(null);
+    } else {
+      activeRate = null;
+    }
+    render();
+  });
+
+  priceInput.addEventListener('input', render);
+
+  // ---- PWA: install prompt ----
+  let deferredPrompt = null;
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.style.display = 'inline-flex';
+  });
+
+  installBtn.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted'){
+      installBtn.style.display = 'none';
+    }
+    deferredPrompt = null;
+  });
+
+  window.addEventListener('appinstalled', () => {
+    installBtn.style.display = 'none';
+    installedNote.style.display = 'block';
+  });
+
+  // ---- Service worker registration ----
+  if ('serviceWorker' in navigator){
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(err => {
+        console.log('SW registration failed:', err);
+      });
+    });
+  }
+</script>
+
+</body>
+</html>
