@@ -302,22 +302,22 @@
       return;
     }
 
-    const discountAmt = price * activeRate;
-    const finalPrice = price - discountAmt;
+    const discountAmt = Math.round(price * activeRate);
+    const finalPrice = Math.round(price) - discountAmt;
     const pctLabel = (activeRate * 100).toFixed(activeRate*100 % 1 === 0 ? 0 : 1);
 
     resultBody.innerHTML = `
       <div class="result-line">
         <span>Qiimaha asalka</span>
-        <span>$${price.toFixed(2)}</span>
+        <span>$${Math.round(price)}</span>
       </div>
       <div class="result-line strike">
         <span>Dhimista (${pctLabel}%)</span>
-        <span>-$${discountAmt.toFixed(2)}</span>
+        <span>-$${discountAmt}</span>
       </div>
       <div class="final">
         <span class="lbl">Wax lacageed</span>
-        <span class="amt">$${finalPrice.toFixed(2)}</span>
+        <span class="amt">$${finalPrice}</span>
       </div>
     `;
   }
