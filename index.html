@@ -302,7 +302,7 @@
       return;
     }
 
-    const discountAmt = Math.ceil(price * activeRate);
+    const discountAmt = Math.floor(price * activeRate);
     const finalPrice = Math.ceil(price * (1 - activeRate));
     const pctLabel = (activeRate * 100).toFixed(activeRate*100 % 1 === 0 ? 0 : 1);
 
